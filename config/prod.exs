@@ -8,9 +8,7 @@ use Mix.Config
 # meaningful, we use this information when generating URLs.
 config :chat, Chat.Endpoint,
   http: [port: System.get_env("PORT") || 4001],
-  url: [host: "192.168.99.100", port: 30003],
-  #url: [host: "localhost", port: System.get_env("PORT") || 4001],
-  secret_key_base: "sdfjnieajngkenglkanfgjkefgkjn",
+  url: [host: System.get_env("URL_HOST"), port: System.get_env("URL_PORT")],
   server: true,
   root: "."
 
@@ -19,8 +17,8 @@ config :libcluster,
     chat_cluster: [
       strategy: Cluster.Strategy.Kubernetes,
       config: [
-        kubernetes_selector: "app=chat",
-        kubernetes_node_basename: "chat1",
+        kubernetes_selector: "app=" <> System.get_env("NODE_NAME"),
+        kubernetes_node_basename: System.get_env("NODE_NAME"),
         polling_interval: 10_000]]]
 
 # ## SSL Support

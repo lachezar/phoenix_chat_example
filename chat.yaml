@@ -36,13 +36,17 @@ spec:
           image: chat:v1
           env:
           - name: NODE_NAME
-            value: chat1
+            value: chat
           - name: NODE_IP
             valueFrom:
               fieldRef:
                 fieldPath: status.podIP
           - name: ERLANG_COOKIE
             value: "42"
+          - name: URL_HOST
+            value: "192.168.99.100" # run `minikube ip` to get it
+          - name: URL_PORT
+            value: "30003"
           - name: PORT
             value: "4001"
           - name: REPLACE_OS_VARS

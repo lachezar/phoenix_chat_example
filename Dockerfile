@@ -7,10 +7,11 @@ RUN mkdir -p /src
 WORKDIR /src
 COPY . /src
 
+# run `minikube ip` to get the external ip
+ENV URL_HOST 192.168.99.100
+ENV URL_PORT 30003
 ENV PORT 4001
-ENV NODE_NAME chat1
-ENV NODE_IP 127.0.0.1
-ENV ERLANG_COOKIE 42
+ENV NODE_NAME chat
 ENV MIX_ENV=prod
 RUN mix do deps.get, compile, phoenix.digest, release
 

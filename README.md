@@ -1,14 +1,18 @@
 # Simple Chat Example
 > Built with the [Phoenix Framework](https://github.com/phoenixframework/phoenix)
 
-To start your new Phoenix application you have to:
+This version of the chat example uses Docker + Kubernetes:
 
-1. Clone this repo, then cd to the new directory
-2. Install dependencies with `mix deps.get`
-3. (optional) Install npm dependencies to customize the ES6 js/Sass `npm install`
-4. Start Phoenix router with `mix phoenix.server`
-
-Now you can visit `localhost:4000` from your browser.
+1. Clone this repo, then cd to the new directory.
+2. Install Docker.
+3. Install minikube.
+4. Install node.
+5. Find your minikube interface with `minikube ip` and configure it in the chat.yaml and Dockerfile.
+6. Run `npm install` to install all node dependencies.
+7. Run `build.sh` which will create a Docker image with the app.
+8. Run `kubectl create -f ./chat.yaml` which will create a load balancer and 3 replicas of the chat app and will connect them together using bitwalker/libcluster.
+9. Run `minikube service chat-v1 --url` and open the link.
+10. You can change the number of replicas (scale them) with `kubectl scale rc chat-v1 --replicas=5`.
 
 ## Live Demo
 http://phoenixchat.herokuapp.com
