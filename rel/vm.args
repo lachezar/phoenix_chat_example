@@ -1,0 +1,8 @@
+-name "${NODE_NAME}@${NODE_IP}"
+-setcookie "${ERLANG_COOKIE}"
+-smp auto
+
+## Enable kernel poll and a few async threads
++K true
++A 64
+

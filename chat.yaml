@@ -1,0 +1,54 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: chat-v1
+  labels:
+    app: chat
+spec:
+  # if your cluster supports it, uncomment the following to automatically create
+  # an external load-balanced IP for the frontend service.
+  type: LoadBalancer
+  ports:
+  # the port that this service should serve on
+  - port: 4001
+    nodePort: 30003
+    protocol: TCP
+    name: chat-v1
+  selector:
+    app: chat
+---
+apiVersion: v1
+kind: ReplicationController
+metadata:
+  name: chat-v1
+  labels:
+    app: chat
+spec:
+  replicas: 3
+  template:
+    metadata:
+      labels:
+        app: chat
+        version: v1
+    spec:
+      containers:
+        - name: chat
+          image: chat:v1
+          env:
+          - name: NODE_NAME
+            value: chat1
+          - name: NODE_IP
+            valueFrom:
+              fieldRef:
+                fieldPath: status.podIP
+          - name: ERLANG_COOKIE
+            value: "42"
+          - name: PORT
+            value: "4001"
+          - name: REPLACE_OS_VARS
+            value: "true"
+          - name: MIX_ENV
+            value: prod
+          ports:
+            - containerPort: 4001
+              name: http

@@ -7,8 +7,21 @@ use Mix.Config
 # You should also configure the url host to something
 # meaningful, we use this information when generating URLs.
 config :chat, Chat.Endpoint,
-  http: [port: {:system, "PORT"}],
-  url: [host: "example.com"]
+  http: [port: System.get_env("PORT") || 4001],
+  url: [host: "192.168.99.100", port: 30003],
+  #url: [host: "localhost", port: System.get_env("PORT") || 4001],
+  secret_key_base: "sdfjnieajngkenglkanfgjkefgkjn",
+  server: true,
+  root: "."
+
+config :libcluster,
+  topologies: [
+    chat_cluster: [
+      strategy: Cluster.Strategy.Kubernetes,
+      config: [
+        kubernetes_selector: "app=chat",
+        kubernetes_node_basename: "chat1",
+        polling_interval: 10_000]]]
 
 # ## SSL Support
 #
